@@ -12,6 +12,7 @@
   "description": "Automated Caption Calculator from Media Links Template Doc",
   "main": "./src/electron/main.js",
   "dependencies": {
+    "accounting": "^0.4.1",
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "electron": "^1.7.6",
@@ -19,7 +20,9 @@
     "html-table-to-json": "^0.2.1",
     "jquery": "^3.2.1",
     "json-to-markdown-table": "^1.0.0",
+    "markdown-pdf": "^8.0.0",
     "moment": "^2.18.1",
+    "money": "^0.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "table-to-json": "^0.12.0",

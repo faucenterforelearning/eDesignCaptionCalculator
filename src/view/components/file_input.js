@@ -9,7 +9,7 @@ class FileInput extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {error: ''}
+        this.state = {error: '', price: "0.00"}
 
     }
 
@@ -34,16 +34,52 @@ class FileInput extends React.Component{
                 i === 0 ? docResult.docHead = tableJson.results : docResult.docBody = tableJson.results;
             }
 
-            ipcRenderer.send('document:submit', docResult);
+            const formData = {
+                docResult,
+                pricePerMin: this.state.price
+            }
+            console.log(formData);
+            ipcRenderer.send('document:submit', formData);
         }
     }
 
     render(){
         return (
             <div>
-                <form onSubmit = {(e)=>{e.preventDefault(); this.processDocument();}} >
-                    <input ref = "file" type = "file"></input>
-                    <button type = "submit">Submit</button>
+                <form  >
+                    <div>
+                        <label for = "price">Enter caption Price Per Minute: </label>
+                        $
+                        <input 
+                            id = "price"
+                            style= {{width: "4em"}}
+                            ref = 'price' 
+                            type = "number"
+                            label = "Enter Price Per Minute for Captions"
+                            name = "Price"
+                            value = {this.state.price}
+                            onChange = {(e)=>{this.setState({price: e.target.value})}}
+                            onFocus = {(e)=>{this.setState({price: ''})}}
+                            maxLength = "5"
+                        />
+                    </div>
+                    <p />
+                    <div>
+                        <label for = "file">Load the course media template document: </label>
+                        <p/>
+                        <input 
+                            id = "file"
+                            ref = "file" 
+                            type = "file"
+                            label = "Select HTML File"
+                            name = "File" 
+                        />
+                    </div>
+                    <p/>
+                    <div style= {{alignItems: "center"}}>
+                        <button type = "submit" onClick = {(e)=>{e.preventDefault(); this.processDocument();}}>Submit</button>
+                    </div>
+                    
                 </form>
             </div>
         );
