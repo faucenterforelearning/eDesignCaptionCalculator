@@ -13,10 +13,12 @@
   "main": "./src/electron/main.js",
   "dependencies": {
     "accounting": "^0.4.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "decompress-zip": "^0.3.0",
-    "electron": "^1.7.6",
+    "electron-debug": "^1.5.0",
     "electron-pdf": "^1.3.0",
     "html-table-to-json": "^0.2.1",
     "jquery": "^3.2.1",
@@ -33,8 +35,7 @@
     "unzip": "^0.1.11"
   },
   "devDependencies": {
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
+    "electron": "^1.7.12",
     "eslint": "^4.17.0",
     "eslint-plugin-react": "^7.6.1"
   },

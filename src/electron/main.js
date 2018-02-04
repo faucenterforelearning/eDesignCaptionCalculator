@@ -7,6 +7,8 @@ const jsonToMarkdownTable = require('json-to-markdown-table');
 const fs = require('fs');
 const Readable = require('stream').Readable;
 const markdownpdf = require('markdown-pdf');
+//require('electron-debug')({enabled: false});
+
 
 const getTitleMDString = require('./service/helpers/get_title_md_string');
 const getFooterMDString = require('./service/helpers/get_footer_md_string');
@@ -81,7 +83,7 @@ ipcMain.on('document:submit', (event, { filePath, pricePerMin }) => {
             const nameArr = htmlFilePath.split('');
            
             if(!nameArr[nameArr.length -1] === 'l' || !nameArr[nameArr.length] -4 === 'h'){
-                mainWindow.webContents.send('document:error', 'The zip file did not contain an html file');
+                mainWindow.webContents.send('document:error', 'This zip file did not contain a proper html file from Google Docs');
                 return;
             }
 
@@ -126,6 +128,7 @@ ipcMain.on('document:submit', (event, { filePath, pricePerMin }) => {
                 );
         })
         .catch((err) => {
+            mainWindow.webContents.send('document:error', `There was an error unzipping the file. Did you get the zip from Google Docs? \n${err}`);
             console.log('There was an error unzipping the file', err);
         });
 });
