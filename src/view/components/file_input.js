@@ -19,12 +19,15 @@ class FileInput extends React.Component{
     submit(){
         const selectedFile = ReactDOM.findDOMNode(this.refs.file).files[0];
         const filePath = selectedFile.path;
+
+        console.log(selectedFile.type);
         if(parseFloat(this.state.price) <= 0){
             alert('Price must be greater than 0');
             return;
         }
 
-        if(selectedFile.type !== 'application/zip'){
+        if(selectedFile.type !== 'application/x-zip-compressed'){
+
             alert('The file must be zip file');
             return;
         }

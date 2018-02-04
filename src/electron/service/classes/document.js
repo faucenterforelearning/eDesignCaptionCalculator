@@ -43,19 +43,18 @@ class MediaDocument {
             if(parsedRowObj['Length(00:00:00)'] !== ''){
                 rebuiltDoc.push(parsedRowObj);
             }
-            
         });
         
         for(let objKey in rebuiltDoc[0]){
             this.composedHeaders.push(objKey);
         }
+
         this.composedRows = rebuiltDoc;
 
         return this.composedRows;
     }
 
     calculateModuleCost(module){
-        
         const duration = moment.duration(module['Length(00:00:00)']);
         const mins = duration.asSeconds() / 60;
         
@@ -89,7 +88,6 @@ class MediaDocument {
 
         const rowObjects = this.parseDocRows();
         const headers = this.composedHeaders;
-
         return {columns: headers, object: rowObjects }
     }
 }

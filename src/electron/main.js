@@ -7,7 +7,7 @@ const jsonToMarkdownTable = require('json-to-markdown-table');
 const fs = require('fs');
 const Readable = require('stream').Readable;
 const markdownpdf = require('markdown-pdf');
-//require('electron-debug')({enabled: false});
+//require('electron-debug')({enabled: true});
 
 
 const getTitleMDString = require('./service/helpers/get_title_md_string');
@@ -26,8 +26,8 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = electron;
 let mainWindow;
 
 const windowOptions = {
-    width: 320,
-    height: 205,
+    width: 400,
+    height: 250,
     center: true,
     resizable: false,
     minimizable: false,
@@ -92,6 +92,7 @@ ipcMain.on('document:submit', (event, { filePath, pricePerMin }) => {
             const { docBody, docHead } = docResult;
 
             const newDoc = new MediaDocument(docBody, pricePerMin);
+            //console.log(newDoc);
             const tableObj = newDoc.buildForJsonToMD();
 
             const headData = getTitleMDString(docHead);

@@ -8,7 +8,8 @@ module.exports = (htmlFilePath, mainWindow, ipcMain)=>{
     return new Promise((resolve)=>{
         mainWindow.webContents.send('document:processHTML', htmlFile);
         ipcMain.on('document:tables', (event, processedDoc)=>{
-            docResult = processedDoc;    
+            docResult = processedDoc; 
+            console.log(docResult); 
             resolve(docResult);
         });
     });
