@@ -14,7 +14,7 @@ const getDocRows = (doc)=>{
 class MediaDocument {
     constructor(doc, pricePerMin){
 
-        this.pricePerMin = pricePerMin || 2.50;
+        this.pricePerMin = pricePerMin;
         this.docHeaders = getColHeaders(doc);
         this.docRows = getDocRows(doc);
         this.composedRows = [];
