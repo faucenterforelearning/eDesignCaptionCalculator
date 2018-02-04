@@ -74,7 +74,7 @@ ipcMain.on('document:submit', (event, {docResult, pricePerMin})=>{
 
     const fileOut = `${outputPath}/${courseNum}_${instructor}_Caption Cost.pdf`;
 
-    const message = `Your file were sucessfully calculated. You can fine a pdf of it here: \n${fileOut}`;
+    const message = `Your file were sucessfully calculated. You can find a pdf for it here: \n${fileOut}`;
 
     const stream = new Readable();
     stream._read = function noop(){};

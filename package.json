@@ -22,11 +22,13 @@
     "json-to-markdown-table": "^1.0.0",
     "markdown-pdf": "^8.0.0",
     "moment": "^2.18.1",
+    "moment-duration-format": "^1.3.0",
     "money": "^0.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "table-to-json": "^0.12.0",
-    "tabletojson": "^0.6.0"
+    "tabletojson": "^0.6.0",
+    "unzip": "^0.1.11"
   },
   "devDependencies": {
     "babel-plugin-transform-react-jsx": "^6.24.1",
