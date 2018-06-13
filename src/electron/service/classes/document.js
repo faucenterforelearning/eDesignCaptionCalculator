@@ -1,6 +1,6 @@
 const moment = require('moment');
 const accounting = require('accounting');
-
+require('moment-duration-format');
 const getColHeaders = (doc)=>{
     return doc[0][0];
 }
@@ -14,7 +14,7 @@ const getDocRows = (doc)=>{
 class MediaDocument {
     constructor(doc, pricePerMin){
 
-        this.pricePerMin = pricePerMin || 2.50;
+        this.pricePerMin = pricePerMin;
         this.docHeaders = getColHeaders(doc);
         this.docRows = getDocRows(doc);
         this.composedRows = [];
@@ -30,7 +30,7 @@ class MediaDocument {
             for(let objKey in row){
                 parsedRowObj[this.docHeaders[objKey]] = row[objKey]; 
             }
-
+            
             for(let objKey in parsedRowObj){
                 if(objKey === 'Mediasite link' || objKey === 'CC (Y/N)' || objKey === 'Location in Course(Module #)'){
                     delete parsedRowObj[objKey];
@@ -40,8 +40,10 @@ class MediaDocument {
             parsedRowObj['Module Cost'] = this.calculateModuleCost(parsedRowObj);
 
            
-
-            rebuiltDoc.push(parsedRowObj);
+            if(parsedRowObj['Length(00:00:00)'] !== ''){
+                rebuiltDoc.push(parsedRowObj);
+            }
+            
         });
         
         for(let objKey in rebuiltDoc[0]){
@@ -57,9 +59,7 @@ class MediaDocument {
         const duration = moment.duration(module['Length(00:00:00)']);
         const mins = duration.asSeconds() / 60;
         
-        let cost = mins * this.pricePerMin;
-        
-        cost = parseFloat(cost.toFixed(2));
+        let cost = parseFloat(mins * this.pricePerMin);
 
         this.courseTotal += cost;
         this.totalRunTime += mins;
@@ -80,9 +80,9 @@ class MediaDocument {
     getTotalRunTime(){
         if(this.totalRunTime === 0){
             this.parseDocRows();
-            return moment.duration(this.courseTotal, 'minutes').humanize();
+            return moment.duration(this.totalRunTime, 'minutes').format('hh:mm:ss');
         }
-        return moment.duration(this.courseTotal, 'minutes').humanize();
+        return moment.duration(this.totalRunTime, 'minutes').format('hh:mm:ss');
     }
 
     buildForJsonToMD(){

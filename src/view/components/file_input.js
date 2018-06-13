@@ -1,31 +1,59 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ipcRenderer} from 'electron';
-import fs from 'fs';
-import $ from 'jquery';
+const $ = require('jquery');
 const HtmlTableToJson = require('html-table-to-json');
 
 class FileInput extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {error: '', price: "0.00"}
+        this.state = {error: '', price: '1.95', destination: 'Downloads' };
 
     }
 
-    processDocument(){
-       const selectedFile = ReactDOM.findDOMNode(this.refs.file).files[0];
-      
-       if(selectedFile.type !== 'text/html'){
-        this.setState({error: "Please submit an HTML version of the Media Links Document"});
-       }else{
+    componentWillMount(){
+        this.startListeners();
+    }
 
-            const docResult = {};
+    submit(){
+        const selectedFile = ReactDOM.findDOMNode(this.refs.file).files[0];
+        const filePath = selectedFile.path;
+        if(parseFloat(this.state.price) <= 0){
+            alert('Price must be greater than 0');
+            return;
+        }
 
-            const htmlFile = fs.readFileSync(selectedFile.path, 'utf-8');
-            
+        if(selectedFile.type !== 'application/zip'){
+            alert('The file must be zip file');
+            return;
+        }
+
+        const formData = {
+            filePath,
+            pricePerMin: this.state.price
+        };
+        ipcRenderer.send('document:submit', formData);
+        
+    }
+
+    startListeners(){
+
+        ipcRenderer.on('document:error', (event, message)=>{
+            alert(message);
+        });
+
+        ipcRenderer.on('pdf:rendered',(event, message)=>{
+            alert(message);
+        });
+        
+        ipcRenderer.on('document:selectedDestination', (event, outputPath)=>{
+            this.setState({destination: outputPath});
+        });
+
+        ipcRenderer.on('document:processHTML', (event, htmlFile)=>{
             const tables = $.parseHTML(htmlFile).filter((node)=> node.nodeName === 'TABLE');
-
+            const docResult = {};
             for(let i = 0; i <= tables.length - 1; i++){
                 const container = document.createElement('div');
                 container.appendChild(tables[i]); 
@@ -33,14 +61,12 @@ class FileInput extends React.Component{
                 
                 i === 0 ? docResult.docHead = tableJson.results : docResult.docBody = tableJson.results;
             }
+            ipcRenderer.send('document:tables', docResult);
+        });
+    }
 
-            const formData = {
-                docResult,
-                pricePerMin: this.state.price
-            }
-            console.log(formData);
-            ipcRenderer.send('document:submit', formData);
-        }
+    getDestination(){
+        ipcRenderer.send('document:destination');
     }
 
     render(){
@@ -52,14 +78,14 @@ class FileInput extends React.Component{
                         $
                         <input 
                             id = "price"
-                            style= {{width: "4em"}}
+                            style= {{width: '4em'}}
                             ref = 'price' 
                             type = "number"
                             label = "Enter Price Per Minute for Captions"
                             name = "Price"
                             value = {this.state.price}
                             onChange = {(e)=>{this.setState({price: e.target.value})}}
-                            onFocus = {(e)=>{this.setState({price: ''})}}
+                            onFocus = {()=>{this.setState({price: ''})}}
                             maxLength = "5"
                         />
                     </div>
@@ -75,11 +101,14 @@ class FileInput extends React.Component{
                             name = "File" 
                         />
                     </div>
-                    <p/>
-                    <div style= {{alignItems: "center"}}>
-                        <button type = "submit" onClick = {(e)=>{e.preventDefault(); this.processDocument();}}>Submit</button>
+                    <div>
+                        <input style = {{width: '80%'}}value = {this.state.destination} readOnly type = 'text'></input>
+                        <button onClick = {(e)=>{e.preventDefault(); this.getDestination();}}>Save To</button>
                     </div>
-                    
+                    <p/>
+                    <div style= {{alignItems: 'center'}}>
+                        <button type = "submit" onClick = {(e)=>{e.preventDefault(); this.submit();}}>Submit</button>
+                    </div>
                 </form>
             </div>
         );

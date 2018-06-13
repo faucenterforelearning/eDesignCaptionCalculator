@@ -1,20 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FileInput from './components/file_input';
-import {ipcRenderer} from 'electron';
 
-const App = ()=>{
 
-    ipcRenderer.on('pdf:rendered',(event, message)=>{
-        alert(message);
-    });
-    
+class App extends React.Component{
 
-    return(
-        <div>
-            <FileInput />
-        </div>
-    );
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return(
+            <div>
+                <FileInput />
+            </div>
+        );
+    }
+
 }
 
 ReactDOM.render(<App />, document.querySelector('#container'));
