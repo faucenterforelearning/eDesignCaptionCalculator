@@ -10,13 +10,13 @@ module.exports = (fileName)=>{
         temp.mkdir('unzipped', (err, dirPath)=>{
             
             if(err){
-                reject();
+                reject("test");
             }
 
             const unzipper = new DecompressZip(fileName);
 
             unzipper.on('error', (err)=>{
-                reject(err);
+                reject(err+ "test");
             });
 
             unzipper.extract({

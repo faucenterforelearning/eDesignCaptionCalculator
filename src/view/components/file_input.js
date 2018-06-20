@@ -23,11 +23,11 @@ class FileInput extends React.Component{
             alert('Price must be greater than 0');
             return;
         }
-
+		/*alert(selectedFile)
         if(selectedFile.type !== 'application/zip'){
             alert('The file must be zip file');
             return;
-        }
+        }*/
 
         const formData = {
             filePath,
@@ -97,6 +97,7 @@ class FileInput extends React.Component{
                             id = "file"
                             ref = "file" 
                             type = "file"
+							accept= ".zip"
                             label = "Select HTML File"
                             name = "File" 
                         />
