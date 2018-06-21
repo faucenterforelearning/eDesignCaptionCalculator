@@ -26,8 +26,8 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = electron;
 let mainWindow;
 
 const windowOptions = {
-    width: 320,
-    height: 205,
+    width: 640,
+    height: 480,
     center: true,
     resizable: false,
     minimizable: false,
