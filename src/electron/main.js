@@ -1,12 +1,17 @@
 const electron = require('electron');
 const os = require('os');
 const path = require('path');
+module.paths.push(path.resolve('node_modules'));
+module.paths.push(path.resolve('../node_modules'));
+module.paths.push(path.resolve(__dirname, '..', '..', '..', '..', 'resources', 'app', 'node_modules'));
+module.paths.push(path.resolve(__dirname, '..', '..', '..', '..', 'resources', 'app.asar', 'node_modules'));
 const url = require('url');
 const tabletojson = require('tabletojson');
 const jsonToMarkdownTable = require('json-to-markdown-table');
 const fs = require('fs');
 const Readable = require('stream').Readable;
-const markdownpdf = require('markdown-pdf');
+
+	var markdownpdf = require('markdown-pdf');
 //require('electron-debug')({enabled: false});
 
 
@@ -26,7 +31,7 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = electron;
 let mainWindow;
 
 const windowOptions = {
-    width: 640,
+    width: 1000,
     height: 480,
     center: true,
     resizable: false,
