@@ -26,8 +26,8 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = electron;
 let mainWindow;
 
 const windowOptions = {
-    width: 320,
-    height: 205,
+    width: 1000,
+    height: 750,
     center: true,
     resizable: false,
     minimizable: false,
@@ -55,7 +55,17 @@ app.on('ready', () => {
         slashes: true
     }));
     mainWindow.webContents.send('document:selectedDestination', outputPath);
+	mainWindow.on('closed',() => {
+		mainWindow = null;
+	});
+	mainWindow.openDevTools()
 });
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
 
 ipcMain.on('document:destination', () => {
 
@@ -113,8 +123,6 @@ ipcMain.on('document:submit', (event, { filePath, pricePerMin }) => {
             stream.push(null);
 
             const options = {
-                paperOrientation: 'landscape',
-                paperFormat: 'A4'
             };
 
             stream

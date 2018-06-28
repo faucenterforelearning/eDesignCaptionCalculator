@@ -24,10 +24,10 @@ class FileInput extends React.Component{
             return;
         }
 
-        if(selectedFile.type !== 'application/zip'){
+        /*if(selectedFile.type !== 'application/zip'){
             alert('The file must be zip file');
             return;
-        }
+        }*/
 
         const formData = {
             filePath,
